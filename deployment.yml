@@ -1,0 +1,39 @@
+---
+# serivce.yml
+apiVersion: v1
+kind: Service
+metadata:
+  name: loadbalance-service
+spec:
+  selector:
+    app: fastapi-k8s
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      name: app-80-8000
+      port: 80
+      targetPort: 8000
+
+---
+# deployment.yml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fastapi-k8s-deployment
+  labels:
+    app: fastapi-k8s
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: fastapi-k8s
+  template:
+    metadata:
+      labels:
+        app: fastapi-k8s
+    spec:
+      containers:
+        - name: fastapi
+          image: <docker_image_path>
+          ports:
+            - containerPort: 8000
