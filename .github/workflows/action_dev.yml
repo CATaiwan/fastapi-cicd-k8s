@@ -54,6 +54,7 @@ jobs:
           python -m pytest
 
   deploy:
+    needs: build
     runs-on: ubuntu-20.04
 
     steps:
@@ -90,4 +91,4 @@ jobs:
       - name: Deploy k8s cluster
         run: |
           kubectl apply -f deployment.yml
-          kubectl set image deployment/fastapi-k8s-deployment app=asia.gcr.io/$GCP_PROJECT_ID/$IMAGE:$GITHUB_SHA
+          kubectl set image deployment/fastapi-k8s-deployment fastapi=asia.gcr.io/$GCP_PROJECT_ID/$IMAGE:$GITHUB_SHA
