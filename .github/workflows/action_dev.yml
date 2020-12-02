@@ -13,6 +13,12 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+env:
+  GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+  GKE_CLUSTER: fastapi-cluster
+  GKE_ZONE: asia-east1-b
+  IMAGE: fastapi-k8s-demo
+
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
@@ -46,3 +52,44 @@ jobs:
 
         run: |
           python -m pytest
+
+  deploy:
+    runs-on: ubuntu-20.04
+
+    steps:
+      # Setup docker build
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@master
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          service_account_key: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+          export_default_credentials: true
+
+      # Configure Docker to use the gcloud command-line tool as a credential
+      - name: Set Docker to use gcloud credential
+        run: |
+        gcloud --quiet auth configure-docker
+
+      # Get the GKE credentials so we can deploy to the cluster
+      - name: Get the gke credentials
+        run: |
+        gcloud container clusters get-credentials "$GKE_CLUSTER" --zone "$GKE_ZONE"
+
+      # Build Docker image
+      - name: Build Docker Image
+        run: |
+        docker build \
+          --tag "asia.gcr.io/$GCP_PROJECT_ID/$IMAGE:$GITHUB_SHA" \
+          .
+
+      - name: Push image to gcr
+        run: |
+        docker push "asia.gcr.io/$PROJECT_ID/$IMAGE:$GITHUB_SHA"
+
+      - name: Deploy k8s cluster
+        run: |
+        kubectl apply -f deployment.yml
+        kubectl set image deployment/fastapi-k8s-deployment app=asia.gcr.io/$PROJECT_ID/$IMAGE:$GITHUB_SHA
