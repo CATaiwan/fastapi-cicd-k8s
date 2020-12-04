@@ -4,4 +4,4 @@ class DemoService(object):
 
     def color(self):
 
-        return "Red"
+        return "Yellow"
