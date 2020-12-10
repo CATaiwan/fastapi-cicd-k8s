@@ -1,0 +1,1 @@
+from .fruit_service import FruitService
