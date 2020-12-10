@@ -36,7 +36,9 @@ $ docker run --rm -p 8000:8000 fastapi-cicd-demo:latest
 
 1. 安裝及設定 [Google Cloud SDK (gcloud)](https://cloud.google.com/sdk/docs/install)
 
-2. 建立 GKE cluster
+2. 安裝及設定 [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
+
+3. 建立 GKE cluster
 
    ```shell
    $ gcloud container clusters create fastapi-cicd-cluster \
@@ -44,13 +46,19 @@ $ docker run --rm -p 8000:8000 fastapi-cicd-demo:latest
    --num-nodes=1
    ```
 
-3. 查詢是否建立成功
+4. 查詢是否建立成功
 
    ```shell
    $ gcloud compute instances list
    ```
 
-4. 建立一個 git tag
+5. 設定 GKE cluster credential to kubectl
+
+   ```shell
+   $ gcloud container clusters get-credentials "fastapi-cicd-cluster"
+   ```
+
+6. 建立一個 git tag
 
    ```shell
    # get commit log
@@ -60,23 +68,24 @@ $ docker run --rm -p 8000:8000 fastapi-cicd-demo:latest
    $ git tag {tag_name} {commit_id}
    ```
 
-5. Push tag to trigger GitHub Action
+7. Push tag to trigger GitHub Action
 
    ```shell
    $ git push origin {tag_name}
    ```
 
-6. 檢查 GitHub Action build & deploy 結果
+8. 檢查 GitHub Action build & deploy 結果
 
-7. GKE 狀態查詢
+9. GKE 狀態查詢
    ```shell
    $ kubectl get all
    ```
    ![GitHub Secrets](/docs/result_kubectl_get_all.png)
 
 ### Reference
-  - https://cloud.google.com/gcp/getting-started/?hl=zh-TW
-  - https://cloud.google.com/kubernetes-engine
-  - https://docs.github.com/en/free-pro-team@latest/actions
-  - https://fastapi.tiangolo.com/
-  - https://docs.docker.com/
+
+- https://cloud.google.com/gcp/getting-started/?hl=zh-TW
+- https://cloud.google.com/kubernetes-engine
+- https://docs.github.com/en/free-pro-team@latest/actions
+- https://fastapi.tiangolo.com/
+- https://docs.docker.com/
