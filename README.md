@@ -1,4 +1,4 @@
-# Fastapi CI/CD Demo
+# Fastapi CI/CD K8s Demo
 
 利用 GitHub Action 實現 CI / CD 自動部署 Fastapi 至 GKE
 
@@ -11,9 +11,9 @@
 ### Fastapi 本機測試及開發
 
 ```shell
-$ docker build -t fastapi-cicd-demo:latest .
+$ docker build -t fastapi-cicd-k8s:latest .
 
-$ docker run --rm -p 8000:8000 fastapi-cicd-demo:latest
+$ docker run --rm -p 8000:8000 fastapi-cicd-k8s:latest
 ```
 
 ### Google Cloud Platform project & service account 設定

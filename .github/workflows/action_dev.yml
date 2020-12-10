@@ -17,7 +17,7 @@ env:
   GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
   GKE_CLUSTER: fastapi-cicd-cluster
   GKE_ZONE: asia-east1-b
-  IMAGE: fastapi-k8s-demo
+  IMAGE: fastapi-cicd-k8s
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
