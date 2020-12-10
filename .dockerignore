@@ -9,3 +9,5 @@ __pycache__
 Dockerfile
 *.lock
 *.toml
+docs
+tests
