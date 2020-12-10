@@ -1,0 +1,11 @@
+.venv
+.pytest_cache
+.vscode
+*.md
+*.pyc
+*.pyo
+*.pyd
+__pycache__
+Dockerfile
+*.lock
+*.toml

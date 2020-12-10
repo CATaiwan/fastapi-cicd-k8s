@@ -1,12 +1,12 @@
 FROM python:3.7.7-stretch
 
-COPY . /fastapi_cicd_demo
+COPY . /app
 
-WORKDIR /fastapi_cicd_demo
+WORKDIR /app
 
 RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 EXPOSE 8000
 
-CMD [ "uvicorn", "fastapi_cicd_demo.api:app", "--proxy-headers", "--host", "0.0.0.0" ]
+CMD [ "uvicorn", "app.api:app", "--proxy-headers", "--host", "0.0.0.0" ]
