@@ -4,4 +4,4 @@ class FruitService(object):
 
     def get_apple_color(self):
 
-        return "Red"
+        return "Green"
